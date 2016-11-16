@@ -1,0 +1,21 @@
+ User::create([                                                              'name' => 'Jan',                                                                'surname' => 'Kowalski',                                                  'username' => 'jkowalski',                                                      'email' => 'jk@fima.pj',                                                        'shop_id' => Shop::first(),      'password' => bcrypt('60rly22')                                               ]);
+
+
+Role::create([                                                              'role_name' =>                                                                  'admin']);
+
+User::create([                                                              'name' => 'Mateusz',                                                                'surname' => 'Bąk',                                                        'role' => Role::all()[0],                                                       'username' => 'admin',                                                      'email' => 'mateuszbak3@gmail.com',                                                        'shop_id' => null,                                                    'password' => bcrypt('60rly22')]);
+
+
+ActionType::create([
+'action_name' => 'WORK_START',
+]);
+
+Shop::create([
+'address' => 'Strzelno',
+'phone' => '+48 795 795 651'
+]);
+
+Record::create([
+'action_id' => 1,
+'user_id' => '2'
+]);
