@@ -80,6 +80,16 @@ class Application extends SymfonyApplication implements ApplicationContract
     }
 
     /**
+     * Clear the console application bootstrappers.
+     *
+     * @return void
+     */
+    public static function forgetBootstrappers()
+    {
+        static::$bootstrappers = [];
+    }
+
+    /**
      * Run an Artisan console command by name.
      *
      * @param  string  $command
@@ -188,7 +198,7 @@ class Application extends SymfonyApplication implements ApplicationContract
      */
     protected function getEnvironmentOption()
     {
-        $message = 'The environment the command should run under.';
+        $message = 'The environment the command should run under';
 
         return new InputOption('--env', null, InputOption::VALUE_OPTIONAL, $message);
     }

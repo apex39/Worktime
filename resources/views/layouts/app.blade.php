@@ -56,9 +56,9 @@
                         @endif
                         @if (!is_null(Auth::user()) and Auth::user()->checkRole("admin"))
                         <li><a href="{{ url('/managers') }}">Managers</a></li>
-                        <li><a href="{{ url('/register') }}">Workers</a></li>
-                        <li><a href="{{ url('/register') }}">Shops</a></li>
-                        @elseif (!is_null(Auth::user()) and Auth::user()->checkRole("manager"))
+                        <li><a href="{{ url('/workers') }}">Workers</a></li>
+                        <li><a href="{{ url('/shops') }}">Shops</a></li>
+                        @elseif (!is_null(Auth::user()) and Auth::user()->checkRole("manager") and Auth::user()->active)
                         <li><a href="{{ url('/register') }}">Workers</a></li>
                         <li><a href="{{ url('/register') }}">Shops</a></li>
                         @endif

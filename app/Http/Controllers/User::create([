@@ -1,4 +1,4 @@
- User::create([                                                              'name' => 'Jan',                                                                'surname' => 'Kowalski',                                                  'username' => 'jkowalski',                                                      'email' => 'jk@fima.pj',                                                        'shop_id' => Shop::first(),      'password' => bcrypt('60rly22')                                               ]);
+ User::create([                                                            'name' => 'Jan',                                                                'surname' => 'Kowalski',                                                  'username' => 'jkowalski',                                                      'email' => 'jk@fima.pj',                                                        'shop_id' => Shop::first(),      'password' => bcrypt('60rly22')                                               ]);
 
 
 Role::create([                                                              'role_name' =>                                                                  'admin']);

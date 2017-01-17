@@ -15,8 +15,7 @@ var bootstrap_sass = './node_modules/bootstrap-sass/';
  */
 
 elixir((mix) => {
-	mix.copy(bootstrap_sass+"assets/fonts/bootstrap",'public/fonts');
-	
+mix.copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/','public/fonts/bootstrap');
     mix.sass('app.scss')
        .webpack('app.js');
 });

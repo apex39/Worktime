@@ -13,10 +13,32 @@ class Shop extends Model
      */
 
     protected $fillable = [
-        'address', 'phone'
+        'address', 'phone', 'opening_time', 'closing_time', 'break_time'
     ];
     public function users()
     {
-    	$this->hasMany(User::class);
+    	return $this->belongsToMany(User::class);
     }
+    public function workers()
+    {
+        $workers = array();
+        foreach ($this->users as $user) {
+            if ($user->checkRole('worker')){
+                $workers[] = $user;
+            }
+        }
+        return $workers;
+    }
+    public function usersWithRoles()
+    {
+//        $users = $this->users;
+//        $users->load(['roles' => function ($query) {
+//            $query->where('role_name', '=', 'manager');
+////            $query->where('shop_id', '=', $this->shop_id);
+//        }]);
+        return $this->belongsToMany(User::class)->with('roles')->get();
+
+    }
+
+
 }

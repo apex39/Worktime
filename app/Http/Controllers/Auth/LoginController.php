@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -45,5 +46,17 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    protected function authenticated()
+    {
+        if(Auth::user()->checkRole('admin') or Auth::user()->checkRole('manager')){
+            if(Auth::user()->active == false) {
+                return redirect('setpassword');
+            } else {
+                return redirect('home');
+            }
+        } else return Auth::logout(); //TODO: Don't authenticate anyone who's not admin or manager at all
+
     }
 }

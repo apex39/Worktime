@@ -73,16 +73,17 @@
                             <button type="submit" class="btn btn-primary">
                                 {{ $pageName }}
                             </button>
-                             <form class="form-horizontal" role="form" method="POST" action="{{ url('/managers/delete/'.$user->id) }}">
+
+                        </div>
+                    </div>
+                </form>
+                             <form class="delete form-horizontal" role="form" id="deleteForm" method="POST" action="/managers/delete/{{ $user->id }}">
                              {{ method_field('DELETE') }}
+                              {{ csrf_field() }}
                             <button type="button" class="btn btn-primary pull-right" id="deleteButton" >
                                 Delete
                             </button>
                     </form>
-                        </div>
-                    </div>
-                </form>
-
             </div>
         </div>
     </div>
@@ -92,21 +93,30 @@
 <script src="{{ URL::asset('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js') }}"></script>
 <script>
+
     $(document).ready(function() {
+//         $( "#deleteForm" ).submit(function( event ) {
+//   alert( "Handler for .submit() called." );
+//   
+// });
         /* Login button click handler */
-        $('#deleteButton').on('click', function() {
+        $('#deleteButton').click(function(event) {
             bootbox.confirm({ 
               size: "small",
               message: "Are you sure?", 
-          callback: function(result){
+          callback: function(result){            
+            event.preventDefault();
             if (result) {
-                var deletePostUri = "/managers/delete/{{$user->id}}";
-                document.location.href = deletePostUri;
+                $( "#deleteForm" ).submit();
             }
 
-          } }
+          } 
+      }
       );
         });
+
+
+
     });
 </script>
 @endsection

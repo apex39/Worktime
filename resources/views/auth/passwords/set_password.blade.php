@@ -5,10 +5,9 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                    <button type="button" class="btn btn-default pull-right">Add</button>
-                <div class="panel-heading">{{ $pageName }}</div>
+                <div class="panel-heading">Set password</div>
                 <div class="panel-body">
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/setpassword') }}">
                         {{ csrf_field() }}
                         
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -35,9 +34,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ $pageName }}
-                                </button>
+                                <button type="submit" class="btn btn-primary">Set password</button>
                             </div>
                         </div>
                     </form>
