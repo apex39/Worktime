@@ -11,7 +11,7 @@ use App\Role;
 
 //TODO: Delete passing page names to views - code it in each view to make it simpler
 class UsersController extends Controller
-{    
+{
     /**
      * Create a new controller instance.
      *
@@ -56,7 +56,7 @@ class UsersController extends Controller
             $user_shops = $user->shops()->get();
 
             return view('user.edit', compact('pageName', 'shops', 'user', 'user_shops'));
-        } 
+        }
         return abort(403, 'Unauthorized action.');
 
     }
@@ -73,12 +73,12 @@ class UsersController extends Controller
             $manager->save(); //Must be saved before role and shop, to have its id to pivot table
 
             $role = Role::where('role_name', 'manager')->first();
-            $manager->roles()->save($role);   
+            $manager->roles()->save($role);
 
-                 
+
             foreach ($request->shops as $shop_id) {
-                $shop = Shop::find($shop_id);      
-                $manager->shops()->save($shop);  
+                $shop = Shop::find($shop_id);
+                $manager->shops()->save($shop);
             }
             flash($manager->username.' added successfully!', 'success');
             return redirect('managers');
@@ -114,12 +114,16 @@ class UsersController extends Controller
     /* Worker functions */
     public function workers()
     {
-        if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
-            $pageName = "Workers";
+        if(Auth::user()->checkRole("admin")) {
             $shops = Shop::with('users.roles')->get();
+            $isAdmin = true;
+            return view('user.worker.list', compact('shops', 'isAdmin'));
 
-            return view('user.worker.list', compact('pageName', 'shops'));
-        }
+        } elseif(Auth::user()->checkRole("manager")) {
+            $shops = Auth::user()->shops->load('users.roles');
+            $isAdmin = false;
+            return view('user.worker.list', compact('shops', 'isAdmin'));
+    }
         return abort(403, 'Unauthorized action.');
     }
 
@@ -135,7 +139,11 @@ class UsersController extends Controller
             }
             while (User::where('worker_id', '=', $worker_id)->exists());
 
-            $shops = Shop::all(); // worker's assigned to a shop
+            if (Auth::user()->checkRole("admin")){
+                $shops = Shop::all(); // worker's assigned to a shop
+            } elseif (Auth::user()->checkRole("manager")) {
+                $shops = Auth::user()->shops;
+            }
             return view('user.worker.add', compact('pageName', 'shops', 'worker_id'));
         }
         return abort(403, 'Unauthorized action.');
@@ -143,13 +151,19 @@ class UsersController extends Controller
     }
     public function openEditWorkerView(User $user)
     {
-        if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) { //TODO: Is it really needed to check roles here each time?
+        if(!$user->checkRole("worker")) return abort(403, 'Unauthorized action.');
+
+        if(Auth::user()->checkRole("admin")) {
             $shops = Shop::all();
             $user_shops = $user->shops()->get();
+            return view('user.worker.edit', compact('shops', 'user', 'user_shops'));
 
-            return view('user..worker.edit', compact('pageName', 'shops', 'user', 'user_shops'));
-        }
-        return abort(403, 'Unauthorized action.');
+        } elseif(Auth::user()->checkRole("manager")) {
+            $shops = Auth::user()->shops;
+            $user_shops = $user->shops()->get();
+            return view('user.worker.edit', compact('shops', 'user', 'user_shops'));
+        } else
+            return abort(403, 'Unauthorized action.');
 
     }
     public function addWorker(Request $request, String $worker_id)

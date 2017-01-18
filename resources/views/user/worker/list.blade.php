@@ -8,7 +8,7 @@
 
             <div class="panel panel-default">
                 <a href="/workers/add" class="btn btn-default pull-right">Add</a>
-                <div class="panel-heading"><b>{{ $pageName }}</b></div>
+                <div class="panel-heading"><b>Workers</b></div>
                 
                 <ul class="list-group">
                     @foreach ($shops as $shop)
@@ -22,8 +22,11 @@
                                 {{--Two loops over the users as we want list of managers on top --}}
                                 @foreach($shop->users as $user)
                                     @if($user->checkRole("manager"))
-                                        <li class="list-group-item">{{$user->name}} {{$user->surname}} <span class="glyphicon glyphicon-user"></span>
-                                            <a href="/managers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>
+                                        <li class="list-group-item"> <span class="glyphicon glyphicon-user"></span>
+                                            {{$user->name}} {{$user->surname}}
+                                            @if ($isAdmin)
+                                                <a href="/managers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>
+                                            @endif
                                         </li>
                                     @endif
                                 @endforeach

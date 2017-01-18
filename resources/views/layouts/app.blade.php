@@ -59,8 +59,8 @@
                         <li><a href="{{ url('/workers') }}">Workers</a></li>
                         <li><a href="{{ url('/shops') }}">Shops</a></li>
                         @elseif (!is_null(Auth::user()) and Auth::user()->checkRole("manager") and Auth::user()->active)
-                        <li><a href="{{ url('/register') }}">Workers</a></li>
-                        <li><a href="{{ url('/register') }}">Shops</a></li>
+                        <li><a href="{{ url('/workers') }}">Workers</a></li>
+                        <li><a href="{{ url('/shops') }}">Shops</a></li>
                         @endif
                         @if (Auth::check())
                             <li class="dropdown">

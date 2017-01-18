@@ -7,8 +7,11 @@
             @include('flash::message')
 
             <div class="panel panel-default">
-                <a href="/shops/add" class="btn btn-default pull-right">Add</a>
-                <div class="panel-heading"><b>{{ $pageName }}</b></div>
+                @if ($isAdmin)
+                    <a href="/shops/add" class="btn btn-default pull-right">Add</a>
+                @endif
+
+                <div class="panel-heading"><b>Shops</b></div>
                 
                 <ul class="list-group">
                     @foreach ($shops as $shop)

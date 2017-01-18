@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">{{ $pageName }}</div>
+                <div class="panel-heading">Edit shop</div>
                 <div class="panel-body">
                     @include('flash::message')
 
@@ -82,13 +82,12 @@
                         </div>
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ $pageName }}
-                            </button>
+                            <button type="submit" class="btn btn-primary">Edit shop</button>
 
                         </div>
                     </div>
                 </form>
+                    @if ($isAdmin)
                              <form class="delete form-horizontal" role="form" id="deleteForm" method="POST" action="/shops/delete/{{ $shop->id }}">
                              {{ method_field('DELETE') }}
                               {{ csrf_field() }}
@@ -96,6 +95,7 @@
                                 Delete
                             </button>
                     </form>
+                    @endif
             </div>
         </div>
     </div>
