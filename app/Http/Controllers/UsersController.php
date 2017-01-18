@@ -143,13 +143,11 @@ class UsersController extends Controller
     }
     public function openEditWorkerView(User $user)
     {
-        if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
-            $pageName = "Edit worker";
-
+        if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) { //TODO: Is it really needed to check roles here each time?
             $shops = Shop::all();
             $user_shops = $user->shops()->get();
 
-            return view('user.edit', compact('pageName', 'shops', 'user', 'user_shops'));
+            return view('user..worker.edit', compact('pageName', 'shops', 'user', 'user_shops'));
         }
         return abort(403, 'Unauthorized action.');
 
@@ -182,9 +180,12 @@ class UsersController extends Controller
     }
 
 
-    public function updateworker(User $user, Request $request)
+    public function updateWorker(User $user, Request $request)
     {
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
+            $this->validate($request, [
+                'worker_id' => 'digits:4',
+            ]);
             $user->update($request->all());
             $user->shops()->sync($request->shops);
             flash($user->username.' modified successfully!', 'success');

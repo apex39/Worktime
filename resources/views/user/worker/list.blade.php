@@ -22,13 +22,17 @@
                                 {{--Two loops over the users as we want list of managers on top --}}
                                 @foreach($shop->users as $user)
                                     @if($user->checkRole("manager"))
-                                        <li class="list-group-item">{{$user->name}} {{$user->surname}} <span class="glyphicon glyphicon-user"></span></li>
+                                        <li class="list-group-item">{{$user->name}} {{$user->surname}} <span class="glyphicon glyphicon-user"></span>
+                                            <a href="/managers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>
+                                        </li>
                                     @endif
                                 @endforeach
 
                                 @foreach($shop->users as $user)
                                     @if($user->checkRole("worker"))
-                                        <li class="list-group-item">{{$user->name}} {{$user->surname}}</li>
+                                        <li class="list-group-item">{{$user->name}} {{$user->surname}}
+                                            <a href="/workers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>
+                                        </li>
                                     @endif
                                 @endforeach
                             </ul>
