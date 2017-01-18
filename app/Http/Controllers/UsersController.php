@@ -207,7 +207,7 @@ class UsersController extends Controller
         return redirect('home');
     }
 
-    public function deleteworker(User $user)
+    public function deleteWorker(User $user)
     {
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
             $user->roles()->detach();
@@ -218,10 +218,4 @@ class UsersController extends Controller
         }
         return abort(403, 'Unauthorized action.');
     }
-    private function isLoggedAsAdmin() //TODO
-    {
-        
-    }
-
-
 }

@@ -96,7 +96,7 @@
                             </div>
                         </form>
                         <form class="delete form-horizontal" role="form" id="deleteForm" method="POST"
-                              action="/worker/delete/{{ $user->id }}">
+                              action="/workers/delete/{{ $user->id }}">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
                             <button type="button" class="btn btn-primary pull-right" id="deleteButton">

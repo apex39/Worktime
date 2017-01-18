@@ -82,7 +82,7 @@
                         
                     </div>
                 </div>
-                Note: Each worker will be promped for a new password at first login.
+                Note: Each worker will be prompted for a new password at first login.
             </form>
 
         </div>
