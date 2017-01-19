@@ -12,12 +12,12 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'action_id'
+        'user_id', 'action_id', 'finished'
     ];
 
     public function actionType()
     {
-		$this->hasOne('ActionType');    	
+		$this->hasOne('ActionType');
     }
 
     public function user()

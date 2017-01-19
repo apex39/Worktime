@@ -5,10 +5,10 @@
       <interpreter home="php" id="93f4d1f3-0370-409c-a644-91368bb28771" name="Interpreter for Composer" debugger_id="php.debugger.XDebug" />
     </interpreters>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" />
+      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" phpunit_phar_path="$PROJECT_DIR$/phpunit.phar" />
     </phpunit_settings>
   </component>
 </project>
