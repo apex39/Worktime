@@ -12,10 +12,14 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+use App\Record;
+use App\User;
+
+$factory->define(User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
+        'id' => $faker->numberBetween(1000,2000),
         'name' => $faker->name,
         'surname' => $faker->name,
         'username' => $faker->userName,
@@ -26,10 +30,26 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(App\User::class, 'worker', function (Faker\Generator $faker) {
+$factory->define(Record::class, function (Faker\Generator $faker) {
     return [
-        'role' => function () {
+        'id' => $faker->numberBetween(1000,2000),
+        'action_id' => random_int(1,2),
+        'user_id' => User::all()->random()->id,
+        'finished' => false,
+    ];
+});
+
+$factory->state(User::class, 'worker', function (Faker\Generator $faker) {
+    return [
+        'role_id' => function () {
             return App\Role::where('role_name', 'worker')->first();
         }
     ];
 });
+
+$factory->state(Record::class, 'forStartedTime', function (Faker\Generator $faker) {
+    return [
+        'user_id' => 13,
+    ];
+});
+

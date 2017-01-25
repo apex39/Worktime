@@ -164,8 +164,8 @@ class UsersController extends Controller
             return view('user.worker.edit', compact('shops', 'user', 'user_shops'));
         } else
             return abort(403, 'Unauthorized action.');
-
     }
+
     public function addWorker(Request $request, String $worker_id)
     {
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {

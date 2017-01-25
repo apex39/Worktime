@@ -45,6 +45,6 @@ Route::patch('/workers/edit/{user}', 'UsersController@updateWorker');
 Route::delete('/workers/delete/{user}', 'UsersController@deleteWorker');
 Route::post('/workers/add/{worker_id}', 'UsersController@addWorker');
 
-
 /*Records*/
 Route::post('/record/add', 'RecordsController@addStartRecord');
+Route::patch('/record/finish', 'RecordsController@finishRecord');
