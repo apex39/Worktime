@@ -17,11 +17,11 @@ class Record extends Model
 
     public function actionType()
     {
-		$this->hasOne('ActionType');
+		return $this->hasOne(ActionType::class);
     }
 
     public function user()
     {
-		$this->belongsTo('User');    	
+		return $this->hasOne(User::class);
     }
 }
