@@ -10,7 +10,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    Empty yet.
+                    {{ dd($logged_workers) }}
                 </div>
             </div>
         </div>

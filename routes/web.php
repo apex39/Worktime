@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'RecordsController@showLoggedWorkers');
 Route::get('/setpassword', 'HomeController@openSetPasswordView');
 Route::post('/setpassword', 'UsersController@updatePassword');
 

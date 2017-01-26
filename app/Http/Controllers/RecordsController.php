@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ActionType;
 use App\Record;
 use App\Shop;
+use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Log;
@@ -14,22 +15,22 @@ class RecordsController extends Controller
 
     public function showLoggedWorkers()
     {
+        $logged_workers = User::whereHas('records', function($q){
+            $q->where('finished', '=', false);
+        })->with(['records', 'shops'])->get();
+
         if (Auth::user()->checkRole("admin")) {
-            $logged_workers = Record::with('user.shops')->where('finished', false)->get();
             $shops = Shop::all();
         } elseif (Auth::user()->checkRole("manager")) {
             $shops = Auth::user()->shops;
-            $logged_workers = Record::with('user.shops')->where('finished', false)->get();
-            $logged_workers = User::whereHas(['shops', 'records' => function($q){
-                $q->where('role', '!=', 'admin');
-            }])->get();
-            foreach ($logged_workers as $worker) {
+
+            foreach ($logged_workers as $worker_id => $worker) {
                 if ($worker->shops == null) {
                     Log::warning("Worker " . $worker->id . " has no shop assigned. Omitting.");
-                    $logged_workers->forget($worker);
+                    $logged_workers->forget($worker_id );
                 }
                 elseif (!$shops->contains($worker->shops->first()))
-                    $logged_workers->forget($worker);
+                    $logged_workers->forget($worker_id );
             }
         }
         return view('home', compact('shops', 'logged_workers'));
