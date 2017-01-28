@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 @extends('layouts.app')
 
 @section('content')
@@ -9,56 +10,36 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Active workers</div>
 
+                    @php ($record_index = 1)
                     <ul class="list-group">
                         @foreach ($logged_workers as $user)
                             <li class="list-group-item">
                                 <a href="/workers/details/{{ $user->id }}">{{$user->name}} {{$user->surname}}</a>
 
-                                @if($user->records->first()->action_id == 1)
-                                    <span class="pull-right">
-                                            <span class="timer" id="timer.{{$user->records->first()->id}}"></span>
-                                    </span>
-                                    <span class="glyphicon glyphicon-play pull-right"></span>
-                                @endif
-                                @if($user->records->first()->action_id == 2)
-                                    <span class="pull-right">
-                                            <span class="timer" id="timer.{{$user->records->first()->id}}"></span>
-                                    </span>
-                                    <span class="glyphicon glyphicon-pause pull-right"></span>
-                                @endif
+                                @foreach($user->records as $record)
+                                    @if($record->action_id == 1)
+                                        <span class="pull-right">
+                                                <span class="timer" id="timer.{{$record_index}}"></span>
+                                        </span>
+                                        <span class="glyphicon glyphicon-play pull-right"></span>
 
+                                        @php ($record_index++)
+                                    @elseif($record->action_id == 2)
+                                        <span class="pull-right">
+                                                <span class="timer" id="timer.{{$record_index}}"></span>
+                                        </span>
+                                        <span class="glyphicon glyphicon-pause pull-right"></span>
+                                        @php ($record_index++)
+                                    @endif
+                                @endforeach
                             </li>
-
-                            {{--<div id="collapse{{ $user->shops()->first()->id }}" class="panel-collapse collapse">--}}
-                            {{--<ul class="list-group">--}}
-                            {{----}}
-                            {{--@foreach($shop->users as $user)--}}
-                            {{--@if($user->checkRole("manager"))--}}
-                            {{--<li class="list-group-item"> <span class="glyphicon glyphicon-user"></span>--}}
-                            {{--{{$user->name}} {{$user->surname}}--}}
-                            {{--@if ($isAdmin)--}}
-                            {{--<a href="/managers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>--}}
-                            {{--@endif--}}
-                            {{--</li>--}}
-                            {{--@endif--}}
-                            {{--@endforeach--}}
-
-                            {{--@foreach($shop->users as $user)--}}
-                            {{--@if($user->checkRole("worker"))--}}
-                            {{--<li class="list-group-item">{{$user->name}} {{$user->surname}}--}}
-                            {{--<a href="/workers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>--}}
-                            {{--</li>--}}
-                            {{--@endif--}}
-                            {{--@endforeach--}}
-                            {{--</ul>--}}
-                            {{--</div>--}}
                         @endforeach
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
     <script>
         var timers = document.getElementsByClassName("timer");
 

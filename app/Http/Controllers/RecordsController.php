@@ -15,25 +15,36 @@ class RecordsController extends Controller
 
     public function showLoggedWorkers()
     {
-        $logged_workers = User::whereHas('records', function($q){
-            $q->where('finished', '=', false);
-        })->with(['records', 'shops'])->get();
+        if (Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
+            $logged_workers = User::whereHas('records', function ($q) {
+                $q->where('finished', '=', false);
+            })->with(['records' => function ($q){
+                $q->where('finished', '=', false);
+            }, 'shops'])->get();
 
-        if (Auth::user()->checkRole("admin")) {
-            $shops = Shop::all();
-        } elseif (Auth::user()->checkRole("manager")) {
-            $shops = Auth::user()->shops;
+
+            if (Auth::user()->checkRole("manager")) {
+                $shops = Auth::user()->shops;
+
+                foreach ($logged_workers as $worker_id => $worker) {
+                    if ($worker->shops == null) {
+                        Log::warning("Worker " . $worker->id . " has no shop assigned. Omitting.");
+                        $logged_workers->forget($worker_id);
+                    } elseif (!$shops->contains($worker->shops->first()))
+                        $logged_workers->forget($worker_id);
+                }
+            }
 
             foreach ($logged_workers as $worker_id => $worker) {
-                if ($worker->shops == null) {
-                    Log::warning("Worker " . $worker->id . " has no shop assigned. Omitting.");
-                    $logged_workers->forget($worker_id );
+                $records = $worker->records;
+                foreach ($records as $record) {
+                    $records_dates[] = $record->created_at;
                 }
-                elseif (!$shops->contains($worker->shops->first()))
-                    $logged_workers->forget($worker_id );
             }
-        }
-        return view('home', compact('shops', 'logged_workers'));
+            return view('home', compact('logged_workers', 'records_dates'));
+        } else
+            return abort(403, 'Unauthorized action.');
+
     }
 
     public function addStartRecord(Request $request)

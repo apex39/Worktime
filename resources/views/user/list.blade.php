@@ -12,7 +12,7 @@
                 
                 <ul class="list-group">
                     @foreach ($users as $user)
-                        <a href="/managers/edit/{{ $user->id }}" class="list-group-item clearfix">{{ $user->name." ".$user->surname }}                    
+                        <a href="/managers/edit/{{ $user->id }}" class="list-group-item clearfix">{{ $user->name." ".$user->surname }}
                         </a>
                     @endforeach
                 </ul>   

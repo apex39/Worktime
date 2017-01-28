@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActionType extends Model
 {
-	public $timestamps = false;
+    public $timestamps = false;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -16,4 +16,5 @@ class ActionType extends Model
     protected $fillable = [
         'action_name'
     ];
+
 }
