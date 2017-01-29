@@ -8,6 +8,7 @@ use Auth;
 use App\User;
 use App\Shop;
 use App\Role;
+use Log;
 
 //TODO: Delete passing page names to views - code it in each view to make it simpler
 class UsersController extends Controller
@@ -130,7 +131,6 @@ class UsersController extends Controller
     public function openAddWorkerView()
     {
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
-            $pageName = "Add worker";
             $digits = 4;
 
             // Randomize worker id until it's not found in database
@@ -144,7 +144,7 @@ class UsersController extends Controller
             } elseif (Auth::user()->checkRole("manager")) {
                 $shops = Auth::user()->shops;
             }
-            return view('user.worker.add', compact('pageName', 'shops', 'worker_id'));
+            return view('user.worker.add', compact('shops', 'worker_id'));
         }
         return abort(403, 'Unauthorized action.');
 
@@ -174,6 +174,7 @@ class UsersController extends Controller
             $worker->name = $request->name;
             $worker->surname = $request->surname;
             $worker->email = $request->email;
+            $worker->working_hours = $request->working_hours;
             $worker->worker_id= $worker_id;
             $worker->password = bcrypt("abcd1234");
             $worker->active = false;
@@ -199,6 +200,7 @@ class UsersController extends Controller
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
             $this->validate($request, [
                 'worker_id' => 'digits:4',
+                'working_hours' => 'integer',
             ]);
             $user->update($request->all());
             $user->shops()->sync($request->shops);

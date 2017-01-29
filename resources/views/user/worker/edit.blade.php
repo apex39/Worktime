@@ -75,6 +75,20 @@
                                 </div>
                             </div>
 
+                            <div class="form-group{{ $errors->has('working_hours') ? ' has-error' : '' }}">
+                                <label for="working_hours" class="col-md-4 control-label">Working hours per day</label>
+
+                                <div class="col-md-6">
+                                    <input id="working_hours" type="number" min=1 class="form-control" name="working_hours" value={{ $user->working_hours  }} required autofocus>
+
+                                    @if ($errors->has('working_hours'))
+                                        <span class="help-block">
+                                    <strong>{{ $errors->first('working_hours') }}</strong>
+                                </span>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="shops" class="col-md-4 control-label">Shop:</label>
                                 <div class="col-md-6">

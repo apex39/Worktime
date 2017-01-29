@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">{{ $pageName }}</div>
+                <div class="panel-heading">Add worker</div>
                 <div class="panel-body">
                 @include('flash::message')
 
@@ -63,12 +63,26 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('working_hours') ? ' has-error' : '' }}">
+                            <label for="working_hours" class="col-md-4 control-label">Working hours per day</label>
+
+                            <div class="col-md-6">
+                                <input id="working_hours" type="number" min=1 class="form-control" name="working_hours" value=8 required autofocus>
+
+                                @if ($errors->has('working_hours'))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first('working_hours') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                          <label for="shops" class="col-md-4 control-label">Shop:</label>
                          <div class="col-md-6">
                           <select class="selectpicker form-control" id="shops" name="shops[]" required >
                             @foreach ($shops as $shop)
-                            <option value={{ $shop->id }}>{{ $shop->address }}</option>
+                              <option value={{ $shop->id }}>{{ $shop->address }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -77,7 +91,7 @@
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="btn btn-primary">
-                            {{ $pageName }}
+                            Add worker
                         </button>
                         
                     </div>
