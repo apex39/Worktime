@@ -44,6 +44,7 @@ Route::get('/workers/edit/{user}', 'UsersController@openEditWorkerView');
 Route::patch('/workers/edit/{user}', 'UsersController@updateWorker');
 Route::delete('/workers/delete/{user}', 'UsersController@deleteWorker');
 Route::post('/workers/add/{worker_id}', 'UsersController@addWorker');
+Route::get('/workers/details/{user}', 'RecordsController@openWorkerDetailsView');
 
 /*Records*/
 Route::post('/record/add', 'RecordsController@addStartRecord');

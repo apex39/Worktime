@@ -7,6 +7,8 @@ use App\Record;
 use App\Shop;
 use App\User;
 use Auth;
+use ConsoleTVs\Charts\Facades\Charts;
+use DateTime;
 use Illuminate\Http\Request;
 use Log;
 
@@ -88,6 +90,14 @@ class RecordsController extends Controller
             if ($record = Record::where('id', $request->input('record_id'))->first()) {
                 Log::info("Found record with id: " . $record->id);
                 $record->finished = true;
+
+                $created_at = strtotime($record->created_at);
+                $now = strtotime(time());
+                $interval  = abs($now - $created_at);
+                $minutes   = round($interval / 60);
+                $record->minutes_spent = $minutes;
+                Log::info("Minutes spent on the activity: " . $record->minutes_spent);
+
                 if ($record->save()) {
                     Log::info("Record successfully finished.");
                     return response()->json([
@@ -106,5 +116,23 @@ class RecordsController extends Controller
                     'status' => false
                 ], 403);
         }
+    }
+
+    public function openWorkerDetailsView(User $user)
+    {
+        $work_records = $user->records()->where('action_id', 1)->get();
+        $break_records = $user->records()->where('action_id', 2)->get();
+
+        foreach ($work_records as $record) {
+
+        }
+        $shop= $user->shops()->first();
+        $chart = Charts::database($records, 'bar', 'highcharts')
+            ->elementLabel("Work")
+            ->dimensions(1000, 500)
+            ->responsive(false)
+            ->values($records->pluck('price'))
+            ->groupByDay();
+        return view('user.worker.details', ['chart' => $chart]);
     }
 }

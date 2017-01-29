@@ -23,6 +23,7 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'name' => $faker->name,
         'surname' => $faker->name,
         'username' => $faker->userName,
+        'working_hours' => 8,
         'active' => true,
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),

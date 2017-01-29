@@ -98,7 +98,6 @@
                 </div>
                 Note: Each worker will be prompted for a new password at first login.
             </form>
-
         </div>
     </div>
 </div>
