@@ -35,8 +35,8 @@ $factory->define(Record::class, function (Faker\Generator $faker) {
     return [
         'id' => $faker->numberBetween(1000,2000),
         'action_id' => random_int(1,2),
-        'user_id' => User::all()->random()->id,
-        'finished' => false,
+        'user_id' => 6,
+        'finished' => true,
     ];
 });
 

@@ -12,34 +12,38 @@
 
                     @php ($record_index = 1)
                     <ul class="list-group">
-                        @foreach ($logged_workers as $user)
-                            <li class="list-group-item">
-                                <a href="/workers/details/{{ $user->id }}">{{$user->name}} {{$user->surname}}</a>
+                        @if($logged_workers != null)
+                            @foreach ($logged_workers as $user)
+                                <li class="list-group-item">
+                                    <a href="/workers/details/{{ $user->id }}">{{$user->name}} {{$user->surname}}</a>
 
-                                @foreach($user->records as $record)
-                                    @if($record->action_id == 1)
-                                        <span class="pull-right">
-                                                <span class="timer" id="timer.{{$record_index}}"></span>
-                                        </span>
-                                        <span class="glyphicon glyphicon-play pull-right"></span>
+                                    @foreach($user->records as $record)
+                                        @if($record->action_id == 1)
+                                            <span class="pull-right">
+                                                    <span class="timer" id="timer.{{$record_index}}"></span>
+                                            </span>
+                                            <span class="glyphicon glyphicon-play pull-right"></span>
 
-                                        @php ($record_index++)
-                                    @elseif($record->action_id == 2)
-                                        <span class="pull-right">
-                                                <span class="timer" id="timer.{{$record_index}}"></span>
-                                        </span>
-                                        <span class="glyphicon glyphicon-pause pull-right"></span>
-                                        @php ($record_index++)
-                                    @endif
-                                @endforeach
-                            </li>
-                        @endforeach
+                                            @php ($record_index++)
+                                        @elseif($record->action_id == 2)
+                                            <span class="pull-right">
+                                                    <span class="timer" id="timer.{{$record_index}}"></span>
+                                            </span>
+                                            <span class="glyphicon glyphicon-pause pull-right"></span>
+                                            @php ($record_index++)
+                                        @endif
+                                    @endforeach
+                                </li>
+                            @endforeach
+                        @else
+                            <p>No active workers.</p>
+                        @endif
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-
+    @if($logged_workers != null)
     <script>
         var timers = document.getElementsByClassName("timer");
 
@@ -64,4 +68,5 @@
         }
         setInterval(updateClocks, 1000);
     </script>
+    @endif
 @endsection

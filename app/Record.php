@@ -24,4 +24,9 @@ class Record extends Model
     {
 		return $this->belongsTo(User::class);
     }
+
+    public function duration()
+    {
+        return $this->created_at->diffForHumans($this->updated_at, true);
+    }
 }

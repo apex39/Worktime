@@ -33,7 +33,8 @@
 
                                 @foreach($shop->users as $user)
                                     @if($user->checkRole("worker"))
-                                        <li class="list-group-item">{{$user->name}} {{$user->surname}}
+                                        <li class="list-group-item">
+                                            <a href="/workers/details/{{ $user->id }}" >{{$user->name}} {{$user->surname}}</a>
                                             <a href="/workers/edit/{{ $user->id }}" class="btn-xs pull-right">Edit</a>
                                         </li>
                                     @endif

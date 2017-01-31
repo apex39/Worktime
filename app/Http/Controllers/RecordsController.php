@@ -24,8 +24,9 @@ class RecordsController extends Controller
                 $q->where('finished', '=', false);
             }, 'shops'])->get();
 
-
-            if (Auth::user()->checkRole("manager")) {
+            if($logged_workers->isEmpty()) {
+                $logged_workers = null;
+            } elseif (Auth::user()->checkRole("manager")) {
                 $shops = Auth::user()->shops;
 
                 foreach ($logged_workers as $worker_id => $worker) {
@@ -36,13 +37,16 @@ class RecordsController extends Controller
                         $logged_workers->forget($worker_id);
                 }
             }
-
-            foreach ($logged_workers as $worker_id => $worker) {
-                $records = $worker->records;
-                foreach ($records as $record) {
-                    $records_dates[] = $record->created_at;
+//            $records_dates[] = null;
+            if($logged_workers != null) {
+                foreach ($logged_workers as $worker_id => $worker) {
+                    $records = $worker->records;
+                    foreach ($records as $record) {
+                        $records_dates[] = $record->created_at;
+                    }
                 }
             }
+//            dd([$logged_workers, $records_dates]);
             return view('home', compact('logged_workers', 'records_dates'));
         } else
             return abort(403, 'Unauthorized action.');
@@ -120,19 +124,8 @@ class RecordsController extends Controller
 
     public function openWorkerDetailsView(User $user)
     {
-        $work_records = $user->records()->where('action_id', 1)->get();
-        $break_records = $user->records()->where('action_id', 2)->get();
+        $records = $user->records;
 
-        foreach ($work_records as $record) {
-
-        }
-        $shop= $user->shops()->first();
-        $chart = Charts::database($records, 'bar', 'highcharts')
-            ->elementLabel("Work")
-            ->dimensions(1000, 500)
-            ->responsive(false)
-            ->values($records->pluck('price'))
-            ->groupByDay();
-        return view('user.worker.details', ['chart' => $chart]);
+        return view('user.worker.details', ['records' => $records, 'user' => $user]);
     }
 }
