@@ -97,4 +97,18 @@ class User extends Authenticatable
         Log::info("user_working_hours: ".$user_working_hours);
         return round($avg_work_time/$user_working_hours,1);
     }
+
+    public function averageDailyBreaks(){
+        $records = $this->records()->where(['action_id'=>2, 'finished' => true])->get();
+        $grouped_records= $records->groupBy(function ($item, $key) {
+            return $item->created_at->format('d-M-y');
+        });
+        $array_of_grouped_records = $grouped_records->toArray();
+        $sum_of_breaks_taken = 0;
+        foreach ($array_of_grouped_records as $date)
+            $sum_of_breaks_taken += sizeof($date);
+        $average = $sum_of_breaks_taken/sizeof($array_of_grouped_records);
+
+        return round($average,1);
+    }
 }

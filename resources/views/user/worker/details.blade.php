@@ -5,15 +5,19 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Worker details</div>
+                    <div class="panel-heading">{{$user->name}} {{$user->surname}}: {{$user->worker_id}} - worker details</div>
                     <div class="panel-body">
                         <div id="chart_div"></div>
-                        <h5>Shop: {{$user->shops->first()->address}}</h5>
-                        <h5>Working hours: {{$user->working_hours}}</h5>
+                        <h5>Shop:<b> {{$user->shops->first()->address}}</b></h5>
+                        <h5>Opening hours: <b>{{ substr($user->shops->first()->opening_time, 0, -3)  }} - {{ substr($user->shops->first()->closing_time, 0, -3) }}</b></h5>
+                        <h5>Break time: <b>{{$user->shops->first()->break_time}}</b> minutes</h5>
+                        <hr>
+                        <h5>Working hours: <b>{{$user->working_hours}}</b></h5>
+                        <h5>Punctuality: <b>{{$user->punctuality()}}</b></h5>
+                        <h5>Work coverage: <b>{{$user->workCoverage()}}</b>%</h5>
+                        <h5>Average daily number of breaks: <b>{{$user->averageDailyBreaks()}}</b></h5>
 
-                        <h5>Punctuality: {{$user->punctuality()}}</h5>
-                        <h5>Work coverage: {{$user->workCoverage()}}%</h5>
-
+                        <h5>E-mail: <a href="mailto:".{{$user->email}}>{{$user->email}}</a></h5>
                     </div>
                 </div>
             </div>
