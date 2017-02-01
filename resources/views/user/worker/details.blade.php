@@ -10,7 +10,10 @@
                         <div id="chart_div"></div>
                         <h5>Shop: {{$user->shops->first()->address}}</h5>
                         <h5>Working hours: {{$user->working_hours}}</h5>
+
                         <h5>Punctuality: {{$user->punctuality()}}</h5>
+                        <h5>Work coverage: {{$user->workCoverage()}}%</h5>
+
                     </div>
                 </div>
             </div>
