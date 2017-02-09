@@ -8,7 +8,6 @@ use Auth;
 use App\User;
 use App\Shop;
 use App\Role;
-use Log;
 
 //TODO: Delete passing page names to views - code it in each view to make it simpler
 class UsersController extends Controller
@@ -176,7 +175,7 @@ class UsersController extends Controller
             $worker->email = $request->email;
             $worker->working_hours = $request->working_hours;
             $worker->worker_id= $worker_id;
-            $worker->password = bcrypt("abcd1234");
+            $worker->password = bcrypt("1234");
             $worker->active = false;
             $worker->save(); //Must be saved before role and shop, to have its id to pivot table
 
