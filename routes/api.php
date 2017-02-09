@@ -13,6 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/login', function (Request $request) {
-    return response()->json( true );
-})->middleware('auth.once.basic');
+Route::get('/login', 'ApiController@loginUser')->middleware('auth.once.basic');

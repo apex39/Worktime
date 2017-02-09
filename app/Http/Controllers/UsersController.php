@@ -166,15 +166,14 @@ class UsersController extends Controller
     }
 
     public function addWorker(Request $request, String $worker_id)
-    {
+    {//TODO:Drop worker_id column
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
             $worker = new User;
-            $worker->username = $request->name.".".$request->surname;
+            $worker->username = $worker_id;
             $worker->name = $request->name;
             $worker->surname = $request->surname;
             $worker->email = $request->email;
             $worker->working_hours = $request->working_hours;
-            $worker->worker_id= $worker_id;
             $worker->password = bcrypt("1234");
             $worker->active = false;
             $worker->save(); //Must be saved before role and shop, to have its id to pivot table
@@ -187,7 +186,7 @@ class UsersController extends Controller
                 $shop = Shop::find($shop_id);
                 $worker->shops()->save($shop);
             }
-            flash($worker->username.' with '.$worker_id.' ID added successfully!', 'success');
+            flash($worker->name.' '.$worker->surname.' with '.$worker_id.' ID added successfully!', 'success');
             return redirect('workers');
         }
         return abort(403, 'Unauthorized action.');
