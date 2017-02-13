@@ -7,7 +7,6 @@ use App\Record;
 use App\Shop;
 use App\User;
 use Auth;
-use ConsoleTVs\Charts\Facades\Charts;
 use DateTime;
 use Illuminate\Http\Request;
 use Log;
@@ -20,11 +19,11 @@ class RecordsController extends Controller
         if (Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
             $logged_workers = User::whereHas('records', function ($q) {
                 $q->where('finished', '=', false);
-            })->with(['records' => function ($q){
+            })->with(['records' => function ($q) {
                 $q->where('finished', '=', false);
             }, 'shops'])->get();
 
-            if($logged_workers->isEmpty()) {
+            if ($logged_workers->isEmpty()) {
                 $logged_workers = null;
             } elseif (Auth::user()->checkRole("manager")) {
                 $shops = Auth::user()->shops;
@@ -37,8 +36,7 @@ class RecordsController extends Controller
                         $logged_workers->forget($worker_id);
                 }
             }
-//            $records_dates[] = null;
-            if($logged_workers != null) {
+            if ($logged_workers != null) {
                 foreach ($logged_workers as $worker_id => $worker) {
                     $records = $worker->records;
                     foreach ($records as $record) {
@@ -46,11 +44,9 @@ class RecordsController extends Controller
                     }
                 }
             }
-//            dd([$logged_workers, $records_dates]);
             return view('home', compact('logged_workers', 'records_dates'));
         } else
             return abort(403, 'Unauthorized action.');
-
     }
 
     public function addStartRecord(Request $request)

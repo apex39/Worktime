@@ -13,4 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/login', 'ApiController@loginUser')->middleware('auth.once.basic');
+Route::post('/login', 'ApiController@loginUser');
+Route::post('/shops', 'ApiController@sendAllShops');
+Route::post('/managershops', 'ApiController@sendManagerShops');
+Route::post('/records', 'ApiController@sendUserRecords');
+Route::post('/activateuser', 'ApiController@activateUser');
