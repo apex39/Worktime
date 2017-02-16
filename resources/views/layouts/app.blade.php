@@ -54,7 +54,6 @@
 
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @endif
                     @if (!is_null(Auth::user()) and Auth::user()->checkRole("admin"))
                         <li><a href="{{ url('/managers') }}">Managers</a></li>

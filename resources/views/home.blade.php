@@ -38,7 +38,7 @@
                                 </li>
                             @endforeach
                         @else
-                            <p>No active workers.</p>
+                            <h5>&nbsp;No active workers.</h5>
                         @endif
                     </ul>
                 </div>

@@ -57,7 +57,7 @@ class UsersController extends Controller
     {
         if(Auth::user()->checkRole("admin")) {
         	$manager = new User;
-        	$manager->username = $request->name.".".$request->surname;
+        	$manager->username = strtolower($request->name.".".$request->surname);
         	$manager->name = $request->name;
         	$manager->surname = $request->surname;
         	$manager->email = $request->email;
