@@ -16,14 +16,14 @@
 
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="worker_id" class="col-md-4 control-label">Worker ID</label>
+                                <label for="username" class="col-md-4 control-label">Worker ID</label>
 
                                 <div class="col-md-6">
-                                    <input id="worker_id" type="text" class="form-control" name="worker_id"
-                                           value="{{ $user->worker_id }}" >
-                                    @if ($errors->has('worker_id'))
+                                    <input id="username" type="text" class="form-control" name="username"
+                                           value="{{ $user->username }}">
+                                    @if ($errors->has('username'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('worker_id') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
                                     @endif
                                 </div>
@@ -79,7 +79,8 @@
                                 <label for="working_hours" class="col-md-4 control-label">Working hours per day</label>
 
                                 <div class="col-md-6">
-                                    <input id="working_hours" type="number" min=1 class="form-control" name="working_hours" value={{ $user->working_hours  }} required autofocus>
+                                    <input id="working_hours" type="number" min=1 class="form-control"
+                                           name="working_hours" value={{ $user->working_hours  }} required autofocus>
 
                                     @if ($errors->has('working_hours'))
                                         <span class="help-block">
@@ -106,6 +107,14 @@
                                         Edit worker
                                     </button>
 
+                                    <button type="button" class="btn btn-primary pull-right" style="margin-left: 7.5px;"
+                                            id="deleteButton">
+                                        Delete
+                                    </button>
+                                    <button type="button" class="btn btn-primary pull-right" id="resetButton">
+                                        Reset Password
+                                    </button>
+
                                 </div>
                             </div>
                         </form>
@@ -113,9 +122,13 @@
                               action="/workers/delete/{{ $user->id }}">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
-                            <button type="button" class="btn btn-primary pull-right" id="deleteButton">
-                                Delete
-                            </button>
+
+                        </form>
+                        <form class="form-horizontal" role="form" id="resetForm" method="POST"
+                              action="/workers/reset/{{ $user->id }}">
+                            {{ method_field('PATCH') }}
+                            {{ csrf_field() }}
+
                         </form>
                     </div>
                 </div>
@@ -128,12 +141,7 @@
     <script type="text/javascript"
             src="{{ URL::asset('https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js') }}"></script>
     <script>
-
         $(document).ready(function () {
-//         $( "#deleteForm" ).submit(function( event ) {
-//   alert( "Handler for .submit() called." );
-//   
-// });
             /* Login button click handler */
             $('#deleteButton').click(function (event) {
                 bootbox.confirm({
@@ -150,7 +158,20 @@
                 );
             });
 
+            $('#resetButton').click(function (event) {
+                bootbox.confirm({
+                        size: "small",
+                        message: "Are you sure?",
+                        callback: function (result) {
+                            event.preventDefault();
+                            if (result) {
+                                $("#resetForm").submit();
+                            }
 
+                        }
+                    }
+                );
+            });
         });
     </script>
 @endsection

@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
 	
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -45,6 +45,7 @@ Route::patch('/workers/edit/{user}', 'UsersController@updateWorker');
 Route::delete('/workers/delete/{user}', 'UsersController@deleteWorker');
 Route::post('/workers/add/{worker_id}', 'UsersController@addWorker');
 Route::get('/workers/details/{user}', 'RecordsController@openWorkerDetailsView');
+Route::patch('/workers/reset/{user}', 'UsersController@resetPassword');
 
 /*Records*/
 Route::post('/record/add', 'RecordsController@addStartRecord');

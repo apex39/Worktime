@@ -18,3 +18,6 @@ Route::post('/shops', 'ApiController@sendAllShops');
 Route::post('/managershops', 'ApiController@sendManagerShops');
 Route::post('/records', 'ApiController@sendUserRecords');
 Route::post('/activateuser', 'ApiController@activateUser');
+Route::post('/details', 'ApiController@sendUserDetails');
+Route::post('/addrecord', 'ApiController@addRecordWrapper');
+Route::post('/finishrecord', 'ApiController@finishRecordWrapper');

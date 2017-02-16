@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Auth;
-
-use App\User;
-use App\Shop;
 use App\Role;
+use App\Shop;
+use App\User;
+use Auth;
+use Illuminate\Http\Request;
 
-//TODO: Delete passing page names to views - code it in each view to make it simpler
 class UsersController extends Controller
 {
     /**
@@ -25,13 +23,12 @@ class UsersController extends Controller
     public function managers()
     {
     	if(Auth::user()->checkRole("admin")) {
-    		$pageName = "Managers";
     		$users = User::whereHas('roles', function ($query) {
     			$query->where('role_name', '=', 'manager');
 			})->get();
 
 
-    		return view('user.list', compact('pageName', 'users'));
+    		return view('user.list', compact('users'));
     	}
     	return abort(403, 'Unauthorized action.');
     }
@@ -39,10 +36,8 @@ class UsersController extends Controller
     public function openAddManagerView()
     {
     	if(Auth::user()->checkRole("admin")) {
-    		$pageName = "Add manager";
-
 			$shops = Shop::all(); // Manager's assigned to some shops
-    		return view('user.add', compact('pageName', 'shops'));
+    		return view('user.add', compact('shops'));
     	}
     	return abort(403, 'Unauthorized action.');
 
@@ -50,12 +45,10 @@ class UsersController extends Controller
     public function openEditManagerView(User $user)
     {
         if(Auth::user()->checkRole("admin")) {
-            $pageName = "Edit manager";
-
             $shops = Shop::all();
             $user_shops = $user->shops()->get();
 
-            return view('user.edit', compact('pageName', 'shops', 'user', 'user_shops'));
+            return view('user.edit', compact('shops', 'user', 'user_shops'));
         }
         return abort(403, 'Unauthorized action.');
 
@@ -136,7 +129,7 @@ class UsersController extends Controller
             do {
                 $worker_id = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
             }
-            while (User::where('worker_id', '=', $worker_id)->exists());
+            while (User::where('username', '=', $worker_id)->exists());
 
             if (Auth::user()->checkRole("admin")){
                 $shops = Shop::all(); // worker's assigned to a shop
@@ -166,7 +159,7 @@ class UsersController extends Controller
     }
 
     public function addWorker(Request $request, String $worker_id)
-    {//TODO:Drop worker_id column
+    {
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
             $worker = new User;
             $worker->username = $worker_id;
@@ -197,12 +190,23 @@ class UsersController extends Controller
     {
         if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
             $this->validate($request, [
-                'worker_id' => 'digits:4',
+                'username' => 'digits:4',
                 'working_hours' => 'integer',
             ]);
             $user->update($request->all());
             $user->shops()->sync($request->shops);
             flash($user->username.' modified successfully!', 'success');
+            return redirect('workers');
+        }
+        return abort(403, 'Unauthorized action.');
+    }
+
+    public function resetPassword(User $user)
+    {
+        if(Auth::user()->checkRole("admin") || Auth::user()->checkRole("manager")) {
+            $user->update(['password' => bcrypt("1234"), 'active' => false]);
+
+            flash($user->username.' password resetted successfully!', 'success');
             return redirect('workers');
         }
         return abort(403, 'Unauthorized action.');

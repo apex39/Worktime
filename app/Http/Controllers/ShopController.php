@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Shop;
+use Auth;
 use DateTime;
 use Illuminate\Http\Request;
-use Auth;
-
-use App\Shop;
-use App\User;
 
 class ShopController extends Controller
 {

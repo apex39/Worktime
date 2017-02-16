@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\ActionType;
 use App\Record;
-use App\Shop;
 use App\User;
 use Auth;
-use DateTime;
 use Illuminate\Http\Request;
 use Log;
 
@@ -56,7 +54,7 @@ class RecordsController extends Controller
         Log::info("Action type requested: " . $request->type . " id:" . $action_id);
 
         if (Auth::user()->checkRole("worker")) {
-            if (Record::where(['user_id' => Auth::user()->id, 'finished' => false])->first() == null) {
+            if (Record::where(['user_id' => Auth::user()->id, 'finished' => false, 'action_id' => $action_id])->count() == 0) {
                 $record = new Record;
                 $record->action_id = $action_id;
                 $record->user_id = Auth::user()->id;
@@ -91,12 +89,13 @@ class RecordsController extends Controller
                 Log::info("Found record with id: " . $record->id);
                 $record->finished = true;
 
-                $created_at = strtotime($record->created_at);
-                $now = strtotime(time());
-                $interval  = abs($now - $created_at);
-                $minutes   = round($interval / 60);
-                $record->minutes_spent = $minutes;
-                Log::info("Minutes spent on the activity: " . $record->minutes_spent);
+                /*Minutes spent is deprecated*/
+//                $created_at = strtotime($record->created_at);
+//                $now = strtotime(time());
+//                $interval  = abs($now - $created_at);
+//                $minutes   = round($interval / 60);
+//                $record->minutes_spent = $minutes;
+//                Log::info("Minutes spent on the activity: " . $record->minutes_spent);
 
                 if ($record->save()) {
                     Log::info("Record successfully finished.");
@@ -120,7 +119,7 @@ class RecordsController extends Controller
 
     public function openWorkerDetailsView(User $user)
     {
-        $records = $user->records;
+        $records = $user->records()->where('finished', true)->get();
 
         return view('user.worker.details', ['records' => $records, 'user' => $user]);
     }

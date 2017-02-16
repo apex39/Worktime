@@ -12,7 +12,7 @@ class Record extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'action_id', 'finished', 'minutes_spent'
+        'user_id', 'action_id', 'finished'
     ];
 
     public function actionType()

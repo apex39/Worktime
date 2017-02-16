@@ -24,14 +24,14 @@
                                             <span class="pull-right">
                                                     <span class="timer" id="timer.{{$record_index}}"></span>
                                             </span>
-                                            <span class="glyphicon glyphicon-play pull-right"></span>
+                                            <span class="glyphicon glyphicon-pause pull-right"></span>
 
                                             @php ($record_index++)
                                         @elseif($record->action_id == 2)
                                             <span class="pull-right">
                                                     <span class="timer" id="timer.{{$record_index}}"></span>
                                             </span>
-                                            <span class="glyphicon glyphicon-pause pull-right"></span>
+                                            <span class="glyphicon glyphicon-play pull-right"></span>
                                             @php ($record_index++)
                                         @endif
                                     @endforeach
@@ -49,29 +49,29 @@
     </div>
 
     @if($logged_workers != null)
-    <script>
-        var timers = document.getElementsByClassName("timer");
+        <script>
+            var timers = document.getElementsByClassName("timer");
 
-        var dates = {!! json_encode($records_dates)!!};
+            var dates = {!! json_encode($records_dates)!!};
 
-        function updateClocks() {
-            for(var i=1; i<=timers.length; i++) {
-                var startDateTime = new Date(dates[i-1].date);
-                var startStamp = startDateTime.getTime();
-                newDate = new Date();
-                newStamp = newDate.getTime();
-                var diff = Math.round((newStamp-startStamp)/1000);
+            function updateClocks() {
+                for (var i = 1; i <= timers.length; i++) {
+                    var startDateTime = new Date(dates[i - 1].date);
+                    var startStamp = startDateTime.getTime();
+                    newDate = new Date();
+                    newStamp = newDate.getTime();
+                    var diff = Math.round((newStamp - startStamp) / 1000);
 
-                var h = Math.floor(diff/(60*60));
-                diff = diff-(h*60*60);
-                var m = Math.floor(diff/(60));
-                diff = diff-(m*60);
-                var s = diff;
+                    var h = Math.floor(diff / (60 * 60));
+                    diff = diff - (h * 60 * 60);
+                    var m = Math.floor(diff / (60));
+                    diff = diff - (m * 60);
+                    var s = diff;
 
-                document.getElementById("timer."+i).innerHTML = h+":"+m+":"+s;
+                    document.getElementById("timer." + i).innerHTML = h + ":" + m + ":" + s;
+                }
             }
-        }
-        setInterval(updateClocks, 1000);
-    </script>
+            setInterval(updateClocks, 1000);
+        </script>
     @endif
 @endsection

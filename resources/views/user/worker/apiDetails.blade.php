@@ -1,46 +1,46 @@
-@extends('layouts.app')
-@section('content')
-    <div class="container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">{{$user->name}} {{$user->surname}}: {{$user->username}} - worker
-                        details
-                    </div>
-                    <div class="panel-body">
-                        @if($records->count() > 0)
-                            <div id="chart_div"></div>
-                        @endif
-                        <h5>Shop:<b> {{$user->shops->first()->address}}</b></h5>
-                        <h5>Opening hours: <b>{{ substr($user->shops->first()->opening_time, 0, -3)  }}
-                                - {{ substr($user->shops->first()->closing_time, 0, -3) }}</b></h5>
-                        <h5>Break time: <b>{{$user->shops->first()->break_time}}</b> minutes</h5>
-                        <hr>
-                        <h5>Working hours: <b>{{$user->working_hours}}</b></h5>
-                        @if($records->count() > 0)
-                            <h5>Punctuality: <b>{{$user->punctuality()}}</b></h5>
-                            <h5>Work coverage: <b>{{$user->workCoverage()}}</b>%</h5>
-                            <h5>Average daily number of breaks: <b>{{$user->averageDailyBreaks()}}</b></h5>
-                        @endif
-
-
-                        <h5>E-mail: <a href="mailto:" .{{$user->email}}>{{$user->email}}</a></h5>
-                    </div>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @if($records->count() > 0)
+                        <div id="chart_div"></div>
+                    @endif
+                    <h5>Allowed break time: <b>{{$user->shops->first()->break_time}}</b> minutes</h5>
+                    <h5>Working hours: <b>{{$user->working_hours}}</b></h5>
+                    @if($records->count() > 0)
+                        <h5>Punctuality: <b>{{$user->punctuality()}}</b></h5>
+                        <h5>Work coverage: <b>{{$user->workCoverage()}}</b>%</h5>
+                        <h5>Average daily number of breaks: <b>{{$user->averageDailyBreaks()}}</b></h5>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-@endsection
+</div>
+<!-- Scripts -->
+<script src="/js/app.js"></script>
+</body>
+
+</html>
 <!--Load the AJAX API-->
 @if($records->count() > 0)
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
         google.charts.load("current", {packages: ["timeline"]});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-
             var container = document.getElementById('chart_div');
             var chart = new google.visualization.Timeline(container);
             var dataTable = new google.visualization.DataTable();

@@ -253,5 +253,6 @@
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="vue" level="application" />
     <orderEntry type="library" name="axios" level="application" />
+    <orderEntry type="library" name="loader" level="application" />
   </component>
 </module>
